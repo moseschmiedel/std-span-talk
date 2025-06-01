@@ -1,76 +1,33 @@
 {
     description = "Presentation and code examples for talk over `std::span`";
 
-    inputs.nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.05";
+    inputs = {
+      nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.05";
+      flake-utils.url = "github:numtide/flake-utils";
+    };
 
-    outputs = { self, nixpkgs }:
+    outputs = { self, nixpkgs, flake-utils }:
+	flake-utils.lib.eachDefaultSystem (system: 
         let 
+	    pname = "example";
             lastModifiedDate = self.lastModifiedDate or self.lastModified or "19700101";
             version = builtins.substring 0 8 lastModifiedDate;
-            supportedSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
-            forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-            nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; overlays = [ self.overlay ]; });
-
+	    pkgs = nixpkgs.legacyPackages.${system};
+	    inherit (pkgs) stdenv;
         in
+	{
+            packages = rec {
+	    	examples = stdenv.mkDerivation rec {
+                    inherit pname version;
 
-        {
-            overlay = final: prev: {
-                example = with final; stdenv.mkDerivation rec {
-                    pname = "example";
-                    inherit version;
+                    src = ./examples; 
 
-                    src = ./examples;
+		    depsBuildBuild = with pkgs; [ clang ninja cmake ];
 
-                    depsBuildBuild = [ clang ninja cmake ];
+		    cmakeBuildDir = "build";
+	        };
 
-                    cmakeBuildDir = "build";
-
-		    installPhase = ''
-		    	mkdir -p $out
-			cp -r $TMP $out
-		    '';
-                };
-
-            };
-
-            packages = forAllSystems (system:
-                {
-                    inherit (nixpkgsFor.${system}) example;
-                });
-            
-            defaultPackage = forAllSystems (system: self.packages.${system}.example);
-
-            nixosModules.example =
-                { pkgs, ... }:
-                {
-                    nixpkgs.overlays = [ self.overlay ];
-
-                    environment.systemPackages = [ pkgs.example ];
-                };
-
-                checks = forAllSystems
-                    (system:
-                        with nixpkgsFor.${system};
-
-                        {
-                            inherit (self.packages.${system}) example;
-
-                            test = stdenv.mkDerivation {
-                                pname = "example-test";
-                                inherit version;
-
-                                buildInputs = [ example ];
-
-                                dontUnpack = true;
-
-                                buildPhase = ''
-                                    echo 'running some integration tests'
-                                    [[ $(example) = 'Hello Nixers!' ]]
-                                '';
-
-                                installPhase = "mkdir -p $out";
-                            };
-                        }
-                    );
-        }; 
+		default = examples;
+	    };
+        });
 }
