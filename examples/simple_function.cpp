@@ -2,16 +2,26 @@
 #include <span>
 #include <print>
 #include <vector>
+#include <array>
 
-template <typename T>
+template <typename T, size_t E>
 
-void f(std::span<T> s) {
-    std::println("called f({})", s);
+void info(std::span<T, E> s) {
+    switch (s.extent) {
+        case std::dynamic_extent:
+            std::println("std::span<std::dynamic_extent>({})", s);
+        break;
+        default:
+            std::println("std::span<std::static_extent>({})", s);
+        break;
+    }
 }
 
 int main() {
-    std::vector<int> buffer({4,2,3,1});
-    f(std::span{buffer});
+    std::vector<int> vector({4,2,3,1});
+    std::array<int, 4> array({4,2,3,1});
+    info(std::span{vector});
+    info(std::span{array});
 
     return EXIT_SUCCESS;
 }
