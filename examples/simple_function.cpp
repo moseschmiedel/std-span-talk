@@ -5,8 +5,8 @@
 
 template <typename T>
 
-void sort(std::span<T> s) {
-    std::sort(s.begin(), s.end());
+void f(std::span<T> s) {
+    std::println("called f({})", s);
 }
 
 int main() {

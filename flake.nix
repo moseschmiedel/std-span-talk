@@ -1,5 +1,5 @@
 {
-    description = "Presentation and code examples for talk over `std::span`"
+    description = "Presentation and code examples for talk over `std::span`";
 
     inputs.nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.05";
 
@@ -7,7 +7,7 @@
         let 
             lastModifiedDate = self.lastModifiedDate or self.lastModified or "19700101";
             version = builtins.substring 0 8 lastModifiedDate;
-            supportedSystems = [ "x86_64-linux", "x86_64-darwin", "aarch64-linux", "aarch64-darwin" ];
+            supportedSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
             forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
             nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; overlays = [ self.overlay ]; });
 
@@ -19,9 +19,16 @@
                     pname = "example";
                     inherit version;
 
-                    src = ./.;
+                    src = ./examples;
 
-                    nativeBuildInputs = [ autoreconfHook ];
+                    depsBuildBuild = [ ninja cmake ];
+
+                    cmakeBuildDir = "build";
+
+                    buildPhase = ''
+                        mkdir build
+                        cmake -b build examples
+                    '';
                 };
 
             };
@@ -31,7 +38,7 @@
                     inherit (nixpkgsFor.${system}) example;
                 });
             
-            defaultPackage = forAllSystems (system: self.packages.${packages}.example);
+            defaultPackage = forAllSystems (system: self.packages.${system}.example);
 
             nixosModules.example =
                 { pkgs, ... }:
@@ -64,6 +71,6 @@
                                 installPhase = "mkdir -p $out";
                             };
                         }
-                    )
-        } 
+                    );
+        }; 
 }
