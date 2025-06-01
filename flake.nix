@@ -21,14 +21,14 @@
 
                     src = ./examples;
 
-                    depsBuildBuild = [ ninja cmake ];
+                    depsBuildBuild = [ clang ninja cmake ];
 
                     cmakeBuildDir = "build";
 
-                    buildPhase = ''
-                        mkdir build
-                        cmake -b build examples
-                    '';
+		    installPhase = ''
+		    	mkdir -p $out
+			cp -r $TMP $out
+		    '';
                 };
 
             };

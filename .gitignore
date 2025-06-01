@@ -1,2 +1,8 @@
+# MacOS
 .DS_Store
+
+# build directory
 build/
+
+# `nix build` result
+result
