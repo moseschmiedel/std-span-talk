@@ -11,9 +11,7 @@ void f(std::span<T> s) {
 
 int main() {
     std::vector<int> buffer({4,2,3,1});
-    std::println(buffer);
-    sort(std::span{buffer});
-    std::println(buffer);
+    f(std::span{buffer});
 
     return EXIT_SUCCESS;
 }
