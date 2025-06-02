@@ -45,7 +45,11 @@
 ]
 
 == outline
-#outline()
+1. motivation
+2. usage
+3. implementation
+4. ownership
+5. additions after C++20
 
 #focus-slide([
   Which types exist in C++20 to describe a contiguous sequence of objects?
