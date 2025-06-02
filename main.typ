@@ -57,14 +57,17 @@
 
 == contiguous sequence types
 
-- ```cpp int[N]```
+- ```cpp int[N]``` (C-style array)
   - not much more then a raw pointer
-  - can also be declared with ```cpp new int[N]``` for storing in the heap
 - ```cpp std::array```
   - fixed-size at compile-time
 - ```cpp std::vector```
   - dynamic-size
-- ```cpp std::span```
+- iterators ```cpp (arr.begin(), arr.end())```
+- ```cpp std::ranges::range``` and ```cpp std::ranges::view```
+- ...and now ```cpp std::span```!
+
+== motivation
 
 == `std::span` #footnote[@noauthor_stdspan_nodate]
 
