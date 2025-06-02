@@ -79,8 +79,8 @@ template<
 > class span;
 ```
 - `Extent` can be
-  - `std::dynamic_extent` (default)
-  - `std::static_extent`
+  - ```cpp std::dynamic_extent``` (default)
+  - ```cpp constexpr std::size_t``` for static sizes
 
 ---
 
