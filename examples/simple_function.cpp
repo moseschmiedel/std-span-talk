@@ -3,16 +3,19 @@
 #include <print>
 #include <string>
 
+const size_t MAX_SPACES = 27;
+
 template <typename T, size_t E>
 
 void info(std::string var_name, std::span<T, E> s) {
-    std::println("{}", var_name);
+    size_t spaces_amount = WIDTH_L - var_name.size();
+    std::string spaces(spaces_amount, ' ');
     switch (s.extent) {
         case std::dynamic_extent:
-            std::println("\tstd::span<std::dynamic_extent>({})", var_name, s);
+            std::println("| {}{} | std::dynamic_extent | {} |", var_name, spaces,  s);
         break;
         default:
-            std::println("\tstd::span<{}>({})", var_name, s.extent, s);
+            std::println("| {}{} |          {}          | {} |", var_name, spaces, s.extent, s);
         break;
     }
 }
