@@ -94,17 +94,45 @@ template<
   ```
 ]
 
-== motivation
-
 == usage
 
-#raw(read("examples/usage.cpp"), lang: "cpp", block: true)
+#let simple_function_file = read("examples/simple_function.cpp").split("\n")
 
-== pointer invalidation
+#v(1fr)
+#raw(
+  (
+    simple_function_file.at(1),
+    "",
+    ..simple_function_file.slice(5,7)
+  ).join("\n"),
+  lang: "cpp", 
+  block: true)
+#v(1fr)
+
+== construct from `std::vector`
+#raw(read("examples/vector.cpp"), lang: "cpp", block: true)
+
+== construct from `std::array`
+#raw(read("examples/array.cpp"), lang: "cpp", block: true)
+
+== construct from C-style array
+#raw(read("examples/c_array.cpp"), lang: "cpp", block: true)
+
+== construct from iterators
+#raw(read("examples/iterator.cpp"), lang: "cpp", block: true)
+
+
+- how can my container class get converted to a `std::span`? 
+
+== deduction of `Extent`
 
 == assembly
 
-== outlook
+== available methods
+
+== pointer invalidation (ownership)
+
+== additions after C++20
 
 == `std::spanstream`
 
