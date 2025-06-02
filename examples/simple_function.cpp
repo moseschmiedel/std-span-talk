@@ -1,27 +1,18 @@
 #include <cstdlib>
 #include <span>
 #include <print>
-#include <vector>
-#include <array>
+#include <string>
 
 template <typename T, size_t E>
 
-void info(std::span<T, E> s) {
+void info(std::string var_name, std::span<T, E> s) {
+    std::println("{}", var_name);
     switch (s.extent) {
         case std::dynamic_extent:
-            std::println("std::span<std::dynamic_extent>({})", s);
+            std::println("\tstd::span<std::dynamic_extent>({})", var_name, s);
         break;
         default:
-            std::println("std::span<std::static_extent>({})", s);
+            std::println("\tstd::span<{}>({})", var_name, s.extent, s);
         break;
     }
-}
-
-int main() {
-    std::vector<int> vector({4,2,3,1});
-    std::array<int, 4> array({4,2,3,1});
-    info(std::span{vector});
-    info(std::span{array});
-
-    return EXIT_SUCCESS;
 }

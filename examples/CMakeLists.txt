@@ -4,8 +4,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 project(std-span-examples LANGUAGES CXX)
 
-add_executable(simple_function simple_function.cpp)
-install(TARGETS simple_function DESTINATION bin)
+add_executable(std-span-examples main.cpp)
+install(TARGETS std-span-examples DESTINATION bin)
 
 # Generate the `compile_commands.json` file.
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")

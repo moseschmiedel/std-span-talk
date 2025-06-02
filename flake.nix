@@ -9,7 +9,7 @@
     outputs = { self, nixpkgs, flake-utils }:
 	flake-utils.lib.eachDefaultSystem (system: 
         let 
-	    pname = "example";
+	    pname = "std-span-examples";
             lastModifiedDate = self.lastModifiedDate or self.lastModified or "19700101";
             version = builtins.substring 0 8 lastModifiedDate;
 	    src = ./examples;
@@ -25,11 +25,11 @@
         in
 	{
             packages = rec {
-	    	examples = stdenv.mkDerivation rec {
+	    	std-span-examples = stdenv.mkDerivation rec {
                     inherit pname version src depsBuildBuild buildInputs cmakeFlags cmakeBuildDir;
 	        };
 
-		default = examples;
+		default = std-span-examples;
 	    };
 
 	    devShells.default = pkgs.mkShell {
