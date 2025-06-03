@@ -2,14 +2,18 @@
 #include <span>
 #include <print>
 
-template<class T, std::size_t E>
-void f(std::span<T,E> s) {}
 
-void main() {
-    int arr[] = {1,2,3};
-    std::span foo{arr};
+std::span<int> s;
+void f() {
+    int arr[] = {1,2};
+    s = arr;
+    std::println("{}", arr);
+}
 
-    arr = nullptr;
+int main() {
+    f();
+    int bar[] = {2,4};
+    std::println("{}", s);
 
     return EXIT_SUCCESS;
 }
