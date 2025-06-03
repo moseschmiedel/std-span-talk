@@ -10,7 +10,7 @@ const size_t WIDTH_C = 19;
 const size_t WIDTH_R = 12;
 
 #include "table.cpp"
-#include "simple_function.cpp"
+#include "info.cpp"
 
 int main() {
     std::println("std::vector:");

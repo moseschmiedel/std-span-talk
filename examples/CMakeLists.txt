@@ -1,11 +1,14 @@
 cmake_minimum_required(VERSION 3.24)
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 project(std-span-examples LANGUAGES CXX)
 
 add_executable(std-span-examples main.cpp)
 install(TARGETS std-span-examples DESTINATION bin)
+
+add_executable(std-span-pointer-invalidation pointer_invalidation.cpp)
+install(TARGETS std-span-pointer-invalidation DESTINATION bin)
 
 # Generate the `compile_commands.json` file.
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
