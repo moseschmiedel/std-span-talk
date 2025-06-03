@@ -1,3 +1,4 @@
+#import "@preview/iconic-salmon-svg:3.0.0": *
 #import "@preview/touying:0.6.1": *
 #import themes.simple: *
 
@@ -30,6 +31,8 @@
   ]
 )
 
+#show link: underline
+
 #title-slide[
   #align(right)[#logo]
   #v(1fr)
@@ -53,11 +56,19 @@
 ]
 
 == outline
-1. motivation
-2. usage
-3. implementation
-4. ownership
-5. additions after C++20
++ motivation
++ implementation
++ usage
++ benefits and limitations
++ additions after C++20
+
+#v(1fr)
+
+#align(center)[
+  #github-info("moseschmiedel/std-span-talk")
+]
+
+#v(1fr)
 
 #focus-slide([
   Which types exist in C++20 to describe a contiguous sequence of objects?
@@ -80,7 +91,7 @@
   - dynamic-size
 - iterators ```cpp (arr.begin(), arr.end())```
 - ```cpp std::ranges::range``` and ```cpp std::ranges::view```
-- ...and now ```cpp std::span```!
+- ...and ```cpp std::span```!
 
 #sources[
 @noauthor_array_nodate
@@ -104,7 +115,7 @@
 
 == `std::span` 
 
-- defined in header `<span>`
+- header `<span>`
 ```cpp
 template<
     class T,
@@ -122,13 +133,6 @@ template<
 
 - unowned "view" over contiguous sequence of objects starting at position 0
 - bounds-safety guarantees
-- pointers, iterators and references to elements of a span are invalidated when an operation invalidates a pointer in the range of the span:
-
-#align(center)[
-  ```cpp
-  [span.data(), span.data() + span.size()]
-  ```
-]
 
 #sources[
 @noauthor_stdspan_nodate
@@ -143,10 +147,11 @@ template<
 #v(1fr)
 #raw(
   (
-    simple_function_file.at(1),
+    simple_function_file.at(0),
     "",
+    ..simple_function_file.slice(2,5),
     "",
-    ..simple_function_file.slice(5,8)
+    ..simple_function_file.slice(6,9)
   ).join("\n"),
   lang: "cpp", 
   block: true)
@@ -154,7 +159,8 @@ template<
 #sources[@noauthor_stdspan_nodate]
 
 == construct from `std::vector`, `std::array` and C array
-#sources[@noauthor_stdspan_nodate]
+#sources[@noauthor_stdspan_nodate, @noauthor_stdspantextentspan_nodate]
+
 #raw(read("examples/vector.cpp").split("\n").at(0), lang: "cpp", block: true)
 #raw(read("examples/array.cpp").split("\n").at(0), lang: "cpp", block: true)
 #raw(read("examples/c_array.cpp").split("\n").at(0), lang: "cpp", block: true)
@@ -176,7 +182,7 @@ template<
 #v(1fr)
 
 == construct from iterators
-#sources[@noauthor_stdspan_nodate]
+#sources[@noauthor_stdspan_nodate, @noauthor_stdspantextentspan_nodate]
 #let it_file = read("examples/iterator.cpp").split("\n")
 #raw(it_file.at(0), lang: "cpp", block: true)
 
@@ -197,22 +203,147 @@ template<
 
 #v(1fr)
 
-- how can my container class get converted to a `std::span`? 
+== data members
+#sources[@noauthor_stdspan_nodate]
+```cpp
+class span {
+  public:
+    constexpr std::size_t extent = Extent;
+  private:
+    T* data_; // pointer to underlying sequence
 
-== deduction of `Extent`
+    // only present when extent == std::dynamic_extent
+    std::size_t size_; // number of elements 
+}
+```
 
-== assembly
+== member functions
+#sources[@noauthor_stdspan_nodate]
 
-== available methods
+- `operator=`
+- *iterators:* `begin`, `end`, `rbegin`, `rend`
+- *access:* `front`, `back`, `data`, `operator[]`
+  - _C++26:_ `at` checks array bounds before access
+- *length:* `size`, `size_bytes`, `empty`
+- *subviews:* `first`, `last`, `subspan`
 
-== pointer invalidation (ownership)
+#v(1fr)
 
-== additions after C++20
+#sym.arrow.double.r no methods which change array size!
 
-== `std::spanstream`
+#v(1fr)
+
+== complex example
+
+#let my-container-file = read("examples/my_container.cpp").split("\n")
+
+#text(22pt)[
+#raw(
+  (
+    ..my-container-file.slice(6,18),
+    "..."
+  ).join("\n"),
+  lang: "cpp",
+  block: true,
+)
+]
+
+---
+
+#text(22pt)[
+#raw(
+  (
+    "...",
+    ..my-container-file.slice(19,27)
+  ).join("\n"),
+  lang: "cpp",
+  block: true,
+)
+]
+
+---
+
+#text(22pt)[
+#raw(
+  (
+    ..my-container-file.slice(28,37)
+  ).join("\n"),
+  lang: "cpp",
+  block: true,
+)
+]
+
+==== Output
+
+`[1, 2]`
 
 == `std::mdspan`
+#sources[@noauthor_stdmdspan_nodate]
+
+- header `<mdspan>`
+
+```cpp
+template<
+    class T,
+    class Extents,
+    class LayoutPolicy = std::layout_right,
+    class AccessorPolicy = std::default_accessor<T>
+> class mdspan;
+```
+
+- multidimensional array view
+  - maps multidimensional index to array element
+  - array does not need to be contiguous
+
+---
+#sources[@noauthor_stdmdspan_nodate]
+
+#let mdspan-file = read("examples/mdspan.cpp").split("\n")
+
+#text(22pt)[
+#raw(
+  (
+    mdspan-file
+  ).join("\n"),
+  lang: "cpp",
+  block: true,
+)
+]
+
+== benefits
+
+- small, "zero-cost" abstraction
+- builtin safety guarantees
+- performance increase for frequently called code paths
+- simple answer for the question "Which array type should I use?"
+
+== limitations
+
+- needs contiguous memory
+- has fixed size, no resizing possible
+- dangling `std::span` possible
+
+== dangling `std::span`
+
+#let dangling-span-file = read("examples/dangling_span.cpp").split("\n")
+
+#text(22pt)[
+#raw(
+  (
+    dangling-span-file.slice(5)
+  ).join("\n"),
+  lang: "cpp",
+  block: true,
+)
+]
+
+
+== conclusion
+
+#v(1fr)
+`std::span` is a *"zero-cost" abstraction*, that *simplifies* the *passing* of *contiguous* data structures where *no ownership* of the underlying memory is required!
+#v(1fr)
 
 == bibliography
 
-#bibliography("C133 - OS \"Modern C++\".bib", title: "")
+#bibliography("C133 - OS \"Modern C++\".bib", title: none)
