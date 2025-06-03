@@ -4,6 +4,7 @@
 #include <string>
 
 template <typename T, size_t E>
+
 void info(std::string var_name, std::span<T, E> s);
 
 template <typename T, size_t E>
