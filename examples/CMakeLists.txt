@@ -7,8 +7,8 @@ project(std-span-examples LANGUAGES CXX)
 add_executable(std-span-examples main.cpp)
 install(TARGETS std-span-examples DESTINATION bin)
 
-add_executable(std-span-pointer-invalidation pointer_invalidation.cpp)
-install(TARGETS std-span-pointer-invalidation DESTINATION bin)
+add_executable(std-span-dangling-span dangling_span.cpp)
+install(TARGETS std-span-dangling-span DESTINATION bin)
 
 add_executable(std-span-my-container my_container.cpp)
 install(TARGETS std-span-my-container DESTINATION bin)
