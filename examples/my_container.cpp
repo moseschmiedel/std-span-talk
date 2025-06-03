@@ -2,24 +2,27 @@
 #include <cstring>
 #include <span>
 #include <print>
+#include <vector>
 
 class MyContainer {
     public:
         std::size_t size;
     private:
-        int* array_;
+        std::vector<int> vector_;
     public:
-    MyContainer(std::size_t s, int arr[s]): size(s) {
-        array_ = new int[s];
-        memcpy(array_, arr, s);
+    MyContainer(std::size_t s, int arr[s]) {
+        vector_ = std::vector<int>();
+        for (int idx = 0; idx < s; idx++) {
+            vector_.emplace(vector_.end(), arr[idx]);
+        }
     }
 
-    using iterator = int*;
+    using iterator = std::vector<int>::iterator;
     iterator begin() {
-        return this->array_;
+        return this->vector_.begin();
     }
     iterator end() {
-        return this->array_ + this->size;
+        return this->vector_.end();
     }
 };
 
