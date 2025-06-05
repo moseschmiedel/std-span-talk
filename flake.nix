@@ -25,11 +25,20 @@
         in
 	{
             packages = rec {
-	    	std-span-examples = stdenv.mkDerivation rec {
+	    	std-span-construction = stdenv.mkDerivation rec {
+                    inherit pname version src depsBuildBuild buildInputs cmakeFlags cmakeBuildDir;
+	        };
+	    	std-span-dangling-span = stdenv.mkDerivation rec {
+                    inherit pname version src depsBuildBuild buildInputs cmakeFlags cmakeBuildDir;
+	        };
+	    	std-span-my-container = stdenv.mkDerivation rec {
+                    inherit pname version src depsBuildBuild buildInputs cmakeFlags cmakeBuildDir;
+	        };
+	    	std-span-mdspan = stdenv.mkDerivation rec {
                     inherit pname version src depsBuildBuild buildInputs cmakeFlags cmakeBuildDir;
 	        };
 
-		default = std-span-examples;
+		default = std-span-construction;
 	    };
 
 	    devShells.default = pkgs.mkShell {

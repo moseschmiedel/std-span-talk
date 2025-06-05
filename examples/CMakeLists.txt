@@ -4,8 +4,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 project(std-span-examples LANGUAGES CXX)
 
-add_executable(std-span-examples main.cpp)
-install(TARGETS std-span-examples DESTINATION bin)
+add_executable(std-span-construction construction.cpp)
+install(TARGETS std-span-construction DESTINATION bin)
 
 add_executable(std-span-dangling-span dangling_span.cpp)
 install(TARGETS std-span-dangling-span DESTINATION bin)
