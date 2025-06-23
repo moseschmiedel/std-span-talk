@@ -13,6 +13,22 @@
 
 #let _sources_dict = state("sources", [])
 
+#pdfpc.config(
+  duration-minutes: 30,
+  start-time: datetime(hour: 14, minute: 10, second: 0),
+  end-time: datetime(hour: 14, minute: 40, second: 0),
+  last-minutes: 5,
+  note-font-size: 12,
+  disable-markdown: false,
+  default-transition: (
+    type: "push",
+    duration-seconds: 2,
+    angle: ltr,
+    alignment: "vertical",
+    direction: "inward",
+  ),
+)
+
 #show: simple-theme.with(
   aspect-ratio: "16-9",
   config-info(
@@ -59,8 +75,8 @@
 + motivation
 + implementation
 + usage
++ std::mdspan
 + benefits and limitations
-+ additions after C++20
 
 #v(1fr)
 
@@ -301,8 +317,15 @@ cmake --build build
 == `std::mdspan`
 #sources[@noauthor_stdmdspan_nodate]
 
+- C++23
 - header `<mdspan>`
+- multidimensional array view
+  - maps multidimensional index to array element
+  - array does not need to be contiguous
 
+---
+
+#v(1fr)
 ```cpp
 template<
     class T,
@@ -311,10 +334,8 @@ template<
     class AccessorPolicy = std::default_accessor<T>
 > class mdspan;
 ```
-
-- multidimensional array view
-  - maps multidimensional index to array element
-  - array does not need to be contiguous
+#v(1fr)
+#sources[@noauthor_stdmdspan_nodate]
 
 ---
 #sources[@noauthor_stdmdspan_nodate]
