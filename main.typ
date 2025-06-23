@@ -28,7 +28,7 @@
       text(20pt, fill: gray.darken(70%), _sources_dict.get())
       _sources_dict.update([])
     }
-  ]
+  ],
 )
 
 #show link: underline
@@ -37,9 +37,9 @@
   #align(right)[#logo]
   #v(1fr)
   #box(fill: rgb("eee"), radius: 5pt, width: 100%, inset: 15pt)[
-  #text(36pt, title)
+    #text(36pt, title)
 
-  #text(24pt, fill: rgb("#222"), subtitle)
+    #text(24pt, fill: rgb("#222"), subtitle)
   ]
 
   #text(18pt)[
@@ -76,7 +76,7 @@
 
 #let sources(body) = context {
   _sources_dict.update(
-    body
+    body,
   )
 }
 
@@ -94,26 +94,26 @@
 - ...and ```cpp std::span```!
 
 #sources[
-@noauthor_array_nodate
-@noauthor_stdarray_nodate
-@noauthor_stdvector_nodate
-@noauthor_stdrangesrange_nodate
-@noauthor_stdrangesview_nodate
-@noauthor_stdspan_nodate
+  @noauthor_array_nodate
+  @noauthor_stdarray_nodate
+  @noauthor_stdvector_nodate
+  @noauthor_stdrangesrange_nodate
+  @noauthor_stdrangesview_nodate
+  @noauthor_stdspan_nodate
 ]
 
 
 == motivation
 #sources[@macintosh_span_2018[p.~6]]
 - decoupling from container implementation
-- bounds-safety 
+- bounds-safety
 - type-safety
   - clearer semantic hints for analysis tools then \
     ```cpp struct { size_t len; void* buf; }; ```
 
 
 
-== `std::span` 
+== `std::span`
 
 - header `<span>`
 ```cpp
@@ -127,7 +127,7 @@ template<
   - ```cpp constexpr std::size_t``` for static sizes
 
 #sources[
-@noauthor_stdspan_nodate
+  @noauthor_stdspan_nodate
 ]
 ---
 
@@ -135,7 +135,7 @@ template<
 - bounds-safety guarantees
 
 #sources[
-@noauthor_stdspan_nodate
+  @noauthor_stdspan_nodate
 ]
 
 
@@ -147,14 +147,15 @@ template<
 #v(1fr)
 #raw(
   (
-    simple_function_file.at(0),
+    simple_function_file.at(1),
     "",
-    ..simple_function_file.slice(2,5),
+    ..simple_function_file.slice(3, 6),
     "",
-    ..simple_function_file.slice(6,9)
+    ..simple_function_file.slice(7, 9),
   ).join("\n"),
-  lang: "cpp", 
-  block: true)
+  lang: "cpp",
+  block: true,
+)
 #v(1fr)
 #sources[@noauthor_stdspan_nodate]
 
@@ -175,7 +176,7 @@ template<
     table.header([*Constructor*], [*Extent*], [*data*]),
     ```cpp std::span{vector}```, ```cpp std::dynamic_extent```, ```cpp [1,2,3,4]```,
     ```cpp std::span{array}```, ```cpp 4```, ```cpp [2,3,4,1]```,
-    ```cpp std::span{c_array}```, ```cpp 4```, ```cpp [3,4,1,2]```
+    ```cpp std::span{c_array}```, ```cpp 4```, ```cpp [3,4,1,2]```,
   )
 ]
 
@@ -213,7 +214,7 @@ class span {
     T* data_; // pointer to underlying sequence
 
     // only present when extent == std::dynamic_extent
-    std::size_t size_; // number of elements 
+    std::size_t size_; // number of elements
 }
 ```
 
@@ -233,49 +234,69 @@ class span {
 
 #v(1fr)
 
-== complex example
+== custom container types
 
 #let my-container-file = read("examples/my_container.cpp").split("\n")
 
 #text(22pt)[
-#raw(
-  (
-    ..my-container-file.slice(6,18),
-    "..."
-  ).join("\n"),
-  lang: "cpp",
-  block: true,
-)
+  #raw(
+    (
+      ..my-container-file.slice(8, 11),
+      ..my-container-file.slice(12, 14),
+      ..my-container-file.slice(15, 22),
+      "...",
+    ).join("\n"),
+    lang: "cpp",
+    block: true,
+  )
 ]
 
 ---
 
 #text(22pt)[
-#raw(
-  (
-    "...",
-    ..my-container-file.slice(19,27)
-  ).join("\n"),
-  lang: "cpp",
-  block: true,
-)
+  #raw(
+    (
+      "...",
+      ..my-container-file.slice(23, 27),
+    ).join("\n"),
+    lang: "cpp",
+    block: true,
+  )
 ]
 
 ---
 
 #text(22pt)[
-#raw(
-  (
-    ..my-container-file.slice(28,37)
-  ).join("\n"),
-  lang: "cpp",
-  block: true,
-)
+  #raw(
+    (
+      ..my-container-file.slice(28, 36),
+    ).join("\n"),
+    lang: "cpp",
+    block: true,
+  )
 ]
 
 ==== Output
 
 `[1, 2]`
+
+== demo
+
+example at \
+#github-info("moseschmiedel/std-span-talk/tree/main/examples/parallel.cpp")
+
+#v(1fr)
+
+run with
+```bash
+nix run .#parallel
+```
+or
+```bash
+cmake -B build -S examples
+cmake --build build
+./build/parallel
+```
 
 == `std::mdspan`
 #sources[@noauthor_stdmdspan_nodate]
@@ -301,13 +322,13 @@ template<
 #let mdspan-file = read("examples/mdspan.cpp").split("\n")
 
 #text(22pt)[
-#raw(
-  (
-    mdspan-file
-  ).join("\n"),
-  lang: "cpp",
-  block: true,
-)
+  #raw(
+    (
+      mdspan-file
+    ).join("\n"),
+    lang: "cpp",
+    block: true,
+  )
 ]
 
 == benefits
@@ -328,20 +349,20 @@ template<
 #let dangling-span-file = read("examples/dangling_span.cpp").split("\n")
 
 #text(22pt)[
-#raw(
-  (
-    dangling-span-file.slice(5)
-  ).join("\n"),
-  lang: "cpp",
-  block: true,
-)
+  #raw(
+    (
+      dangling-span-file.slice(5)
+    ).join("\n"),
+    lang: "cpp",
+    block: true,
+  )
 ]
 
 
 == conclusion
 
 #v(1fr)
-`std::span` is a *"zero-cost" abstraction*, that *simplifies* the *passing* of *contiguous* data structures where *no ownership* of the underlying memory is required!
+`std::span` is a *"zero-cost" abstraction*, that enables\ *automatic optimizations* and *trivial passing* of *contiguous* data structures where *no ownership* of the underlying memory is required!
 #v(1fr)
 
 == bibliography
