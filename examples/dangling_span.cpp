@@ -1,18 +1,16 @@
 #include <cstdlib>
-#include <span>
 #include <print>
-
+#include <span>
 
 std::span<int> s;
 void f() {
-    int arr[] = {1,2};
-    s = arr;
-    std::println("{}", s);
+  int arr[] = {1, 2};
+  s = arr;
 }
 
 int main() {
-    f();
-    std::println("{}", s);
+  f();
+  std::println("{}, {}", s, s.size());
 
-    return EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }
