@@ -1,37 +1,36 @@
+#include "simple_function.cpp"
+
 #include <cstdlib>
 #include <cstring>
-#include <span>
 #include <print>
+#include <span>
 #include <vector>
 
 class MyContainer {
-    public:
-        std::size_t size;
-    private:
-        std::vector<int> vector_;
-    public:
-    MyContainer(std::size_t s, int arr[s]) {
-        vector_ = std::vector<int>();
-        for (int idx = 0; idx < s; idx++) {
-            vector_.emplace(vector_.end(), arr[idx]);
-        }
-    }
+public:
+  std::size_t size;
 
-    using iterator = std::vector<int>::iterator;
-    iterator begin() {
-        return this->vector_.begin();
+private:
+  std::vector<int> vector_;
+
+public:
+  MyContainer(std::size_t s, int arr[s]) {
+    vector_ = std::vector<int>();
+    for (int idx = 0; idx < s; idx++) {
+      vector_.emplace(vector_.end(), arr[idx]);
     }
-    iterator end() {
-        return this->vector_.end();
-    }
+  }
+
+  using iterator = std::vector<int>::iterator;
+  iterator begin() { return this->vector_.begin(); }
+  iterator end() { return this->vector_.end(); }
 };
 
 int main() {
-    int arr[] = {1,2};
-    auto m = MyContainer{2, arr};
-    auto s = std::span{m};
+  int arr[] = {1, 2};
+  auto m = MyContainer{2, arr};
 
-    std::println("{}", s);
+  f(std::span{m});
 
-    return EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }
