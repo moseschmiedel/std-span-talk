@@ -16,6 +16,9 @@ install(TARGETS std-span-my-container DESTINATION bin)
 add_executable(std-span-mdspan mdspan.cpp)
 install(TARGETS std-span-mdspan DESTINATION bin)
 
+add_executable(std-span-parallel parallel.cpp)
+install(TARGETS std-span-parallel DESTINATION bin)
+
 # Generate the `compile_commands.json` file.
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
 

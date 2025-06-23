@@ -34,31 +34,37 @@
         inherit (pkgs) stdenv;
       in
       {
-		apps = {
-			construction = {
-				type = "app";
-				program = "${self.packages.${system}.std-span-examples}/bin/std-span-construction";
-				meta.description = "C++23 example showcasing several ways to construct a std::span.";
-			};
+        apps = {
+          construction = {
+            type = "app";
+            program = "${self.packages.${system}.std-span-examples}/bin/std-span-construction";
+            meta.description = "C++23 example showcasing several ways to construct a std::span.";
+          };
 
-			dangling-span = {
-				type = "app";
-				program = "${self.packages.${system}.std-span-examples}/bin/std-span-dangling-span";
-				meta.description = "C++23 example showcasing the danger of a dangling std::span.";
-			};
+          dangling-span = {
+            type = "app";
+            program = "${self.packages.${system}.std-span-examples}/bin/std-span-dangling-span";
+            meta.description = "C++23 example showcasing the danger of a dangling std::span.";
+          };
 
-			my-container = {
-				type = "app";
-				program = "${self.packages.${system}.std-span-examples}/bin/std-span-my-container";
-				meta.description = "C++23 example showcasing how to implement conversion from custom container type (`MyContainer`) to std::span.";
-			};
+          my-container = {
+            type = "app";
+            program = "${self.packages.${system}.std-span-examples}/bin/std-span-my-container";
+            meta.description = "C++23 example showcasing how to implement conversion from custom container type (`MyContainer`) to std::span.";
+          };
 
-			mdspan = {
-				type = "app";
-				program = "${self.packages.${system}.std-span-examples}/bin/std-span-mdspan";
-				meta.description = "C++23 example showcasing a simple std::mdspan instantiation and member access.";
-			};
-		};
+          mdspan = {
+            type = "app";
+            program = "${self.packages.${system}.std-span-examples}/bin/std-span-mdspan";
+            meta.description = "C++23 example showcasing a simple std::mdspan instantiation and member access.";
+          };
+
+          parallel = {
+            type = "app";
+            program = "${self.packages.${system}.std-span-examples}/bin/std-span-parallel";
+            meta.description = "C++23 example showcasing the performance of std::span in parallel computations in contrast to std::vector.";
+          };
+        };
 
         packages = rec {
           std-span-examples = stdenv.mkDerivation rec {
