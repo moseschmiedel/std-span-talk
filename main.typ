@@ -4,6 +4,11 @@
 
 #set text(font: "Source Sans Pro")
 
+#metadata((
+  presented-at: "2025-06-24",
+  time: "52m",
+))
+
 #let title = [`std::span`]
 #let subtitle = [presentation for the course "C133 - OS Modern C++"]
 #let author = [Mose Schmiedel]
