@@ -97,7 +97,7 @@ void parallel_c_array(std::array<uint64_t, arr_size> &arr) {
         [](uint64_t arr[], std::size_t size) {
           // do some work
           for (std::size_t idx = 0; idx < size; idx++) {
-            arr[idx] += 1;
+            *(arr + idx) += 1;
           }
         },
         sub_arr, size);
@@ -112,7 +112,7 @@ void parallel_c_array(std::array<uint64_t, arr_size> &arr) {
 }
 
 void parallel_span(std::array<uint64_t, arr_size> &arr) {
-  std::array<std::thread, 2> threads;
+  std::array<std::thread, 10> threads;
 
   // calculate the size of the span
   std::size_t sub_size = arr.size() / threads.size();
@@ -149,9 +149,9 @@ void parallel_span(std::array<uint64_t, arr_size> &arr) {
 int main() {
   std::println();
 
-  benchmark("std::span", parallel_span);
-
   benchmark("uint64_t[] and size", parallel_c_array);
+
+  // benchmark("std::span", parallel_span);
 
   benchmark("std::vector", parallel_vector);
 
